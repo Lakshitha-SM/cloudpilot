@@ -1,0 +1,40 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Node / Expo dependencies
+node_modules/
+.expo/
+.expo-shared/
+dist/
+web-build/
+
+# Backups and temporary scratch files
+cloudpilot-demo_backup/
+scratch/
+*.tmp
+*.log
+current_app*.txt
+current_server.txt
+server_temp.txt
+patch*.py
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Database temporary / journals
+*.db-journal
+*.db-wal
+*.db-shm
+
+# IDE / OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

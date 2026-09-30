@@ -1,0 +1,354 @@
+{
+  "model_name": "RandomForestRegressor",
+  "trained_at": "2026-09-17T04:17:56.867252+00:00",
+  "dataset": "GWA-T-12 Bitbrains fastStorage",
+  "dataset_path": "C:\\Users\\Lakshitha SM\\Downloads\\cloudpilot-demo\\data\\processed\\workload_dataset.csv",
+  "target": "future_cpu",
+  "prediction_horizon": "~10 minutes (1 step ahead at 9-second intervals)",
+  "features": [
+    "current_cpu",
+    "current_memory",
+    "current_io",
+    "current_network",
+    "previous_cpu",
+    "previous_memory",
+    "rolling_cpu_mean",
+    "rolling_cpu_std",
+    "rolling_memory_mean",
+    "request_rate",
+    "active_users",
+    "traffic_growth",
+    "hour",
+    "day",
+    "workload_type_code"
+  ],
+  "hyperparameters": {
+    "n_estimators": 100,
+    "max_depth": 12,
+    "min_samples_split": 4,
+    "random_state": 42
+  },
+  "split_strategy": "per_vm_chronological_80_20",
+  "metrics": {
+    "mae": 1.0693,
+    "rmse": 5.0081,
+    "r2": 0.1089,
+    "mape": 29.05,
+    "train_samples": 14712,
+    "test_samples": 3715
+  },
+  "feature_importances": [
+    {
+      "feature": "request_rate",
+      "importance": 0.5385
+    },
+    {
+      "feature": "active_users",
+      "importance": 0.2854
+    },
+    {
+      "feature": "rolling_cpu_mean",
+      "importance": 0.0516
+    },
+    {
+      "feature": "current_network",
+      "importance": 0.0212
+    },
+    {
+      "feature": "current_cpu",
+      "importance": 0.0199
+    },
+    {
+      "feature": "traffic_growth",
+      "importance": 0.0187
+    },
+    {
+      "feature": "current_memory",
+      "importance": 0.0146
+    },
+    {
+      "feature": "day",
+      "importance": 0.0111
+    },
+    {
+      "feature": "rolling_memory_mean",
+      "importance": 0.0095
+    },
+    {
+      "feature": "hour",
+      "importance": 0.0093
+    },
+    {
+      "feature": "previous_memory",
+      "importance": 0.0067
+    },
+    {
+      "feature": "previous_cpu",
+      "importance": 0.0063
+    },
+    {
+      "feature": "rolling_cpu_std",
+      "importance": 0.0043
+    },
+    {
+      "feature": "current_io",
+      "importance": 0.0031
+    },
+    {
+      "feature": "workload_type_code",
+      "importance": 0.0001
+    }
+  ],
+  "actual_vs_predicted": [
+    {
+      "timestamp": "2013-09-05 11:56:38",
+      "actual": 46.15,
+      "predicted": 8.03
+    },
+    {
+      "timestamp": "2013-09-08 10:12:49",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-11 01:32:56",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-07 21:47:47",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-10 13:07:54",
+      "actual": 0.0,
+      "predicted": 1.56
+    },
+    {
+      "timestamp": "2013-09-09 10:26:12",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-08 07:44:28",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-10 23:04:36",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-09 20:26:13",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-08 17:42:50",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-11 08:12:56",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-10 05:34:34",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-09 02:56:11",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-08 00:11:07",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-10 15:31:15",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-09 12:01:12",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-08 09:21:08",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-11 00:41:16",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-09 21:19:33",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-08 11:27:03",
+      "actual": 0.25,
+      "predicted": 0.4
+    },
+    {
+      "timestamp": "2013-09-10 05:57:18",
+      "actual": 0.26,
+      "predicted": 0.37
+    },
+    {
+      "timestamp": "2013-09-09 07:32:10",
+      "actual": 0.55,
+      "predicted": 0.58
+    },
+    {
+      "timestamp": "2013-09-11 02:52:24",
+      "actual": 23.37,
+      "predicted": 23.18
+    },
+    {
+      "timestamp": "2013-09-07 00:21:51",
+      "actual": 0.82,
+      "predicted": 1.17
+    },
+    {
+      "timestamp": "2013-09-08 21:42:06",
+      "actual": 0.55,
+      "predicted": 1.46
+    },
+    {
+      "timestamp": "2013-09-10 16:07:21",
+      "actual": 1.16,
+      "predicted": 1.47
+    },
+    {
+      "timestamp": "2013-09-06 08:41:45",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-08 13:52:04",
+      "actual": 2.19,
+      "predicted": 1.0
+    },
+    {
+      "timestamp": "2013-09-10 10:42:19",
+      "actual": 1.5,
+      "predicted": 1.63
+    },
+    {
+      "timestamp": "2013-09-06 05:56:44",
+      "actual": 3.02,
+      "predicted": 3.19
+    },
+    {
+      "timestamp": "2013-09-08 01:16:59",
+      "actual": 2.61,
+      "predicted": 3.02
+    },
+    {
+      "timestamp": "2013-09-09 20:57:15",
+      "actual": 3.21,
+      "predicted": 3.21
+    },
+    {
+      "timestamp": "2013-09-09 00:13:36",
+      "actual": 0.47,
+      "predicted": 0.32
+    },
+    {
+      "timestamp": "2013-09-09 00:16:56",
+      "actual": 0.46,
+      "predicted": 0.32
+    },
+    {
+      "timestamp": "2013-09-09 00:18:36",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-08 23:30:16",
+      "actual": 0.44,
+      "predicted": 0.45
+    },
+    {
+      "timestamp": "2013-09-08 23:28:36",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-08 23:30:16",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-08 23:26:56",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-08 23:28:36",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-08 22:41:55",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-08 22:38:35",
+      "actual": 0.0,
+      "predicted": 1.45
+    },
+    {
+      "timestamp": "2013-09-08 22:36:55",
+      "actual": 0.38,
+      "predicted": 0.38
+    },
+    {
+      "timestamp": "2013-09-08 22:35:15",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-08 22:33:35",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-11 13:03:42",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-11 13:07:02",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-11 13:07:02",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-11 13:13:42",
+      "actual": 0.0,
+      "predicted": 0.0
+    },
+    {
+      "timestamp": "2013-09-11 13:05:22",
+      "actual": 0.0,
+      "predicted": 0.0
+    }
+  ]
+}

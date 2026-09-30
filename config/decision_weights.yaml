@@ -1,0 +1,139 @@
+# ==============================================================================
+# CloudPilot — APRDA Decision Weights Configuration
+# Adaptive Predictive Resource Decision Algorithm (APRDA)
+# ==============================================================================
+#
+# PURPOSE:
+#   Configures the six decision factor weights used by APRDA for each workload
+#   class.  These are experimental/configurable parameters — they are NOT
+#   claimed to be scientifically optimal.  Adjust based on your specific
+#   infrastructure and SLA requirements.
+#
+# FACTOR DESCRIPTIONS:
+#   capacity    (C) — Capacity Suitability:  does the resource meet the request
+#                     without gross over-provisioning?
+#   utilization (U) — Utilization / Headroom: how much free headroom is
+#                     currently available on the resource?
+#   prediction  (P) — Prediction Suitability: can the resource handle the
+#                     predicted future workload from the Random Forest model?
+#   history     (H) — Historical Similarity: how much do similar past
+#                     successful allocations favour this resource? (RAG)
+#   sla         (S) — SLA Suitability: how well does the resource serve the
+#                     requested SLA priority?
+#   efficiency  (E) — Resource Efficiency: avoids unnecessary over-provisioning.
+#
+# CONSTRAINT:
+#   For every workload class the six weights MUST sum to 1.0.
+#   APRDA validates this at initialisation and raises a configuration error
+#   if any set is invalid.
+#
+# WORKLOAD CLASSES (determined from prediction output):
+#   LOW    — predicted CPU < 40%
+#   NORMAL — predicted CPU in [40%, 65%)
+#   HIGH   — predicted CPU in [65%, 85%)
+#   SPIKE  — predicted CPU >= 85%
+#
+# ==============================================================================
+
+weights:
+
+  LOW:
+    # Under low workload emphasise efficiency and available headroom.
+    # Prediction and SLA protection are less critical.
+    capacity:    0.15
+    utilization: 0.30
+    prediction:  0.10
+    history:     0.15
+    sla:         0.10
+    efficiency:  0.20
+
+  NORMAL:
+    # Under normal workload use a balanced set of weights.
+    capacity:    0.20
+    utilization: 0.20
+    prediction:  0.20
+    history:     0.15
+    sla:         0.15
+    efficiency:  0.10
+
+  HIGH:
+    # Under high workload prioritise prediction accuracy, capacity and SLA.
+    # Efficiency is less important than meeting the demand.
+    capacity:    0.25
+    utilization: 0.15
+    prediction:  0.25
+    history:     0.10
+    sla:         0.20
+    efficiency:  0.05
+
+  SPIKE:
+    # Under spike conditions maximise future capacity headroom and SLA
+    # protection.  History is less reliable under unprecedented spikes.
+    capacity:    0.30
+    utilization: 0.20
+    prediction:  0.25
+    history:     0.05
+    sla:         0.15
+    efficiency:  0.05
+
+
+# ==============================================================================
+# SLA Priority Levels
+# ==============================================================================
+# Maps a request's sla_priority field (or derived value) to a numeric tier
+# used by the SLA Suitability factor calculation.
+# Higher number = higher priority.
+
+sla_levels:
+  LOW:      1
+  MEDIUM:   2
+  HIGH:     3
+  CRITICAL: 4
+
+# Default SLA priority applied when the request does not specify one.
+default_sla_priority: MEDIUM
+
+
+# ==============================================================================
+# Workload Classification Thresholds  (predicted CPU % from Random Forest)
+# ==============================================================================
+
+workload_thresholds:
+  low_max:    40.0   # predicted_cpu < 40 → LOW
+  normal_max: 65.0   # 40 <= predicted_cpu < 65 → NORMAL
+  high_max:   85.0   # 65 <= predicted_cpu < 85 → HIGH
+                     # predicted_cpu >= 85 → SPIKE
+
+
+# ==============================================================================
+# Missing-Data Fallback Strategy
+# ==============================================================================
+# "renormalize"  — if a factor is unavailable, remove it from the scoring and
+#                  renormalise the remaining weights so they still sum to 1.
+#                  This is the recommended and default strategy.
+# "neutral"      — replace the unavailable factor with a fixed neutral score
+#                  equal to 'neutral_fallback_score'.  Useful if renormalisation
+#                  is undesired.
+
+missing_data_strategy: renormalize
+neutral_fallback_score: 0.5   # only used when strategy = "neutral"
+
+
+# ==============================================================================
+# Capacity Suitability — over-provisioning penalty parameters
+# ==============================================================================
+# capacity_ideal_ratio: the ideal ratio of resource capacity to requested
+#   capacity.  A resource whose capacity equals 'ideal_ratio' × requested
+#   gets the best capacity score.
+# capacity_penalty_factor: controls how quickly the score drops for resources
+#   that are much larger than needed.
+
+capacity_ideal_ratio:    2.0
+capacity_penalty_factor: 0.5
+
+
+# ==============================================================================
+# Version / metadata
+# ==============================================================================
+version: "1.0"
+algorithm: "APRDA"

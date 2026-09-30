@@ -1,0 +1,16 @@
+[
+  {
+    "case_id": "RUN-42a94ff4-VM01",
+    "source": "allocation",
+    "current_cpu": 6.31,
+    "current_memory": 0.0,
+    "current_io": 0.023,
+    "current_network": 0.001,
+    "request_rate": 94.7,
+    "workload_type": "Web Traffic",
+    "selected_vm": "VM01",
+    "result": "SUCCESS",
+    "response_time_ms": 0.1,
+    "sla_satisfied": true
+  }
+]

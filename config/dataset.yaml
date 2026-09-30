@@ -1,0 +1,98 @@
+dataset:
+  name: "GWA-T-12 Bitbrains Cloud Datacenter Workload Trace (fastStorage)"
+  source: "Grid Workloads Archive - Distributed Systems Group, TU Delft"
+  raw_path: "data/raw/bitbrains_raw_traces.csv"
+  processed_path: "data/processed/workload_dataset.csv"
+  required_note: >
+    If data/raw/bitbrains_raw_traces.csv is missing, run:
+      python scripts/prepare_dataset.py
+    The script will extract 50 dynamic VM traces from scratch/kwananth/output/
+    if available, or prompt you to place the dataset manually.
+
+columns:
+  timestamp: "timestamp"
+  cpu: "current_cpu"
+  memory: "current_memory"
+  io: "current_io"
+  network: "current_network"
+  target: "future_cpu"
+
+prediction_horizon: "~10 minutes (1-step ahead at 9-second interval)"
+
+model:
+  type: "RandomForestRegressor"
+  model_path: "models/random_forest_workload.pkl"
+  metadata_path: "models/model_metadata.json"
+  n_estimators: 100
+  max_depth: 12
+  min_samples_split: 4
+  random_state: 42
+  test_size: 0.20
+  split_strategy: "group_chronological_per_vm"
+
+features:
+  - current_cpu
+  - current_memory
+  - current_io
+  - current_network
+  - previous_cpu
+  - previous_memory
+  - rolling_cpu_mean
+  - rolling_cpu_std
+  - rolling_memory_mean
+  - request_rate
+  - active_users
+  - traffic_growth
+  - hour
+  - day
+  - workload_type_code
+
+vm_pool:
+  - id: VM01
+    vcpu: 8
+    memory_gb: 16
+    io: Medium
+    network_gbps: 1
+    hourly_cost_usd: 0.12
+  - id: VM02
+    vcpu: 16
+    memory_gb: 32
+    io: High
+    network_gbps: 5
+    hourly_cost_usd: 0.24
+  - id: VM03
+    vcpu: 8
+    memory_gb: 32
+    io: High
+    network_gbps: 10
+    hourly_cost_usd: 0.20
+  - id: VM04
+    vcpu: 4
+    memory_gb: 8
+    io: Low
+    network_gbps: 1
+    hourly_cost_usd: 0.08
+  - id: VM05
+    vcpu: 32
+    memory_gb: 64
+    io: High
+    network_gbps: 25
+    hourly_cost_usd: 0.48
+  - id: VM06
+    vcpu: 16
+    memory_gb: 32
+    io: Medium
+    network_gbps: 5
+    hourly_cost_usd: 0.22
+
+sla:
+  max_response_time_ms: 200
+  cpu_threshold_pct: 85
+  memory_threshold_pct: 80
+
+backend:
+  host: "0.0.0.0"
+  port: 8000
+  cors_origins:
+    - "http://localhost:5173"
+    - "http://127.0.0.1:5173"

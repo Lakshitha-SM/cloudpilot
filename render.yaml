@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: cloudpilot-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.8
+      - key: CLOUDPILOT_AWS_MODE
+        value: READ_ONLY
+      - key: AWS_REGION
+        value: us-east-1
