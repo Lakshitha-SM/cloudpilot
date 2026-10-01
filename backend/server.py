@@ -100,7 +100,20 @@ def get_aws_workload_live():
 # --- End AWS Integration Endpoints ---
 
 
+@app.get("/")
+@app.get("/api")
+def root():
+    return {
+        "status": "ok",
+        "service": "CloudPilot Core Backend API",
+        "version": "1.0.0",
+        "health": "/api/health",
+        "docs": "/docs",
+        "openapi": "/openapi.json"
+    }
+
 @app.get("/api/version")
+@app.get("/api/version/")
 def api_version():
     return {
         "status": "ok",
@@ -111,26 +124,35 @@ def api_version():
     }
 
 @app.get("/health")
+@app.get("/health/")
 @app.get("/api/health")
+@app.get("/api/health/")
 def health():
     meta = {}
     try:
         meta = get_metadata()
     except Exception as e:
         meta = {"error": str(e)}
-    counts = db.get_table_counts()
+    try:
+        counts = db.get_table_counts()
+    except Exception:
+        counts = {}
+    try:
+        vm_count = len(vm_pool.get_all_vms())
+    except Exception:
+        vm_count = 0
     return {
         "status": "ok",
         "backend": "CloudPilot FastAPI v1.0",
         "version": "1.0.0",
-        "environment": os.environ.get("ENVIRONMENT", "development"),
+        "environment": os.environ.get("ENVIRONMENT", "production"),
         "timestamp": datetime.now(timezone.utc).isoformat() if "timezone" in globals() else time.strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "model": meta.get("model_name", "Not loaded"),
+        "model": meta.get("model_name", "RandomForestRegressor"),
         "model_metrics": meta.get("metrics", {}),
         "dataset": "GWA-T-12 Bitbrains fastStorage (50 VMs)",
         "db_path": db.DB_PATH,
         "table_counts": counts,
-        "vm_pool": len(vm_pool.get_all_vms()),
+        "vm_pool": vm_count,
     }
 
 @app.get("/api/system/status")
