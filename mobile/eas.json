@@ -7,7 +7,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_API_URL": "http://172.17.17.103:8000"
+        "EXPO_PUBLIC_API_URL": "https://cloudpilot-backend-08ei.onrender.com"
       }
     },
     "preview": {
@@ -16,7 +16,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "http://172.17.17.103:8000"
+        "EXPO_PUBLIC_API_URL": "https://cloudpilot-backend-08ei.onrender.com"
       }
     },
     "production": {
@@ -24,7 +24,7 @@
         "buildType": "app-bundle"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://api.cloudpilot.io"
+        "EXPO_PUBLIC_API_URL": "https://cloudpilot-backend-08ei.onrender.com"
       }
     }
   },

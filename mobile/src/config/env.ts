@@ -9,7 +9,7 @@
  */
 
 // Deployed HTTPS CloudPilot production backend URL
-export const PRODUCTION_BACKEND_URL = 'https://cloudpilot-backend.onrender.com';
+export const PRODUCTION_BACKEND_URL = 'https://cloudpilot-backend-08ei.onrender.com';
 
 export function isLegacyLocalIp(url: string): boolean {
   return /10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+|192\.168\.\d+\.\d+|localhost|127\.0\.0\.1|10\.0\.2\.2/.test(url);
