@@ -128,31 +128,12 @@ def api_version():
 @app.get("/api/health")
 @app.get("/api/health/")
 def health():
-    meta = {}
-    try:
-        meta = get_metadata()
-    except Exception as e:
-        meta = {"error": str(e)}
-    try:
-        counts = db.get_table_counts()
-    except Exception:
-        counts = {}
-    try:
-        vm_count = len(vm_pool.get_all_vms())
-    except Exception:
-        vm_count = 0
     return {
         "status": "ok",
-        "backend": "CloudPilot FastAPI v1.0",
+        "service": "CloudPilot Core API",
         "version": "1.0.0",
         "environment": os.environ.get("ENVIRONMENT", "production"),
-        "timestamp": datetime.now(timezone.utc).isoformat() if "timezone" in globals() else time.strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "model": meta.get("model_name", "RandomForestRegressor"),
-        "model_metrics": meta.get("metrics", {}),
-        "dataset": "GWA-T-12 Bitbrains fastStorage (50 VMs)",
-        "db_path": db.DB_PATH,
-        "table_counts": counts,
-        "vm_pool": vm_count,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
     }
 
 @app.get("/api/system/status")
@@ -435,5 +416,6 @@ async def stream_workload(scenario: str = "normal"):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("backend.server:app", host="0.0.0.0", port=8000, reload=False)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("backend.server:app", host="0.0.0.0", port=port, reload=False)
 

@@ -14,8 +14,32 @@ DB_PATH = os.path.join(BASE, "database", "cloudpilot.db")
 def _ts():
     return datetime.now(timezone.utc).isoformat()
 
+_db_initialized = False
+
+def _ensure_init():
+    global _db_initialized
+    if not _db_initialized:
+        _db_initialized = True
+        try:
+            os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+            con = sqlite3.connect(DB_PATH, check_same_thread=False)
+            con.executescript(SCHEMA)
+            for alter_sql in [
+                "ALTER TABLE allocation_history ADD COLUMN mode TEXT DEFAULT 'sim'",
+                "ALTER TABLE allocation_history ADD COLUMN reason TEXT",
+            ]:
+                try:
+                    con.execute(alter_sql)
+                except Exception:
+                    pass
+            con.commit()
+            con.close()
+        except Exception as e:
+            print(f"[DB Warning] init error: {e}")
+
 @contextmanager
 def _conn():
+    _ensure_init()
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
     con = sqlite3.connect(DB_PATH, check_same_thread=False)
     con.row_factory = sqlite3.Row
@@ -314,5 +338,4 @@ def get_table_counts() -> dict:
                 result[t] = 0
     return result
 
-# Auto-init on import
-init_db()
+# Database initialized lazily on first access

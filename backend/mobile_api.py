@@ -48,12 +48,22 @@ def _ensure_tables():
             )
         """)
 
-_ensure_tables()
+_mobile_tables_checked = False
+
+def _check_mobile_tables():
+    global _mobile_tables_checked
+    if not _mobile_tables_checked:
+        _mobile_tables_checked = True
+        try:
+            _ensure_tables()
+        except Exception:
+            pass
 
 # ── Auth ──────────────────────────────────────────────────────────────────────
 
 @mobile_router.post("/auth/signup")
 def signup(req: UserSignup):
+    _check_mobile_tables()
     with db._conn() as con:
         existing = con.execute("SELECT id FROM users WHERE email=?", (req.email,)).fetchone()
         if existing:
@@ -70,6 +80,7 @@ def signup(req: UserSignup):
 
 @mobile_router.post("/auth/login")
 def login(req: UserLogin):
+    _check_mobile_tables()
     with db._conn() as con:
         user = con.execute(
             "SELECT id, email, credits, daily_streak, last_checkin, last_spin FROM users "
